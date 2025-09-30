@@ -23,7 +23,7 @@
 body {
     background: #111;
     font-family: sans-serif;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .vintimepicker--circle__timeinputs input[type="number"] {
