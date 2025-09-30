@@ -1578,18 +1578,12 @@ async function loadAll() {
     const rows = [
         [
             `https://raw.githubusercontent.com/vinoth-elito/vinoth-sliders/main/slider.html?v=${cacheBuster}`,
-            `https://vinoth-elito.github.io/vin--datepicker__container/timepicker.html?v=${cacheBuster}`,
-            `https://vinoth-elito.github.io/vin--datepicker__container/timepickerarrow.html?v=${cacheBuster}`,
-            `https://vinoth-elito.github.io/vin--datepicker__container/timepickercircle.html?v=${cacheBuster}`,
-            `https://vinoth-elito.github.io/vin--datepicker__container/monthyearpicker.html?v=${cacheBuster}`,
-            `https://vinoth-elito.github.io/vin--datepicker__container/datetimepicker.html?v=${cacheBuster}`
         ],
         [
-            `https://vinoth-elito.github.io/vin--datepicker__container/daterangepicker.html?v=${cacheBuster}`,
-            `https://vinoth-elito.github.io/vin--datepicker__container/daterangepickersingle.html?v=${cacheBuster}`
+            `https://raw.githubusercontent.com/vinoth-elito/vinoth-sliders/main/slider.html?v=${cacheBuster}`,
         ],
         [
-            `https://vinoth-elito.github.io/vin--datepicker__container/daterangepicker_custom.html?v=${cacheBuster}`
+            `https://raw.githubusercontent.com/vinoth-elito/vinoth-sliders/main/slider.html?v=${cacheBuster}`,
         ]
 
     ];
