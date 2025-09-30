@@ -827,6 +827,7 @@ form#search__popupmain label {
 .cuz__slider {
     width: 100%;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 .exchange__custom__slider,
