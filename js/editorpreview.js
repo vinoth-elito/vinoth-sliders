@@ -1579,7 +1579,7 @@ async function loadAll() {
     const htmlEditor = document.getElementById('html-editor');
     const rows = [
         [
-            `https://vinoth-elito.github.io/vinoth-sliders/slider1.html?v=${cacheBuster}`,
+            `https://vinoth-elito.github.io/vinoth-sliders/slider.html?v=${cacheBuster}`,
         ]
         // [
         //     `https://vinoth-elito.github.io/vin--datepicker__container/daterangepicker.html?v=${cacheBuster}`,
