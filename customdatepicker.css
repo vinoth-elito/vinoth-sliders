@@ -1,0 +1,443 @@
+:root {
+    --calendar__border: #ccc;
+    --calendar__bg: #000;
+    --td__border: #ccc;
+    --td__currentdate: #ccc;
+    --td__currentdate__text: #000;
+    --pure__blackcolor: #000;
+    --td__selecteddate: #ccc;
+    --gray__color9: #999999;
+    --calendar__headerbg: #ccc;
+    --white__bgrcolor: #fff;
+    --calendar__fontfamily: "Helvetica Neue",
+        Helvetica,
+        Arial,
+        sans-serif;
+    --transform__transition: transform 200ms ease-in-out;
+    --opacity__delay: opacity 0.3s ease-in-outl
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+td,
+div,
+img {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.vin--relative {
+    position: relative;
+}
+
+.vinflex {
+    display: flex;
+}
+
+.vinflex--spacebetween {
+    justify-content: space-between;
+}
+
+.vinflex--justifycenter {
+    justify-content: center;
+}
+
+.vinflex--alignitemscenter {
+    align-items: center;
+}
+
+.vinflex--1 {
+    flex: 1;
+}
+
+.vin--inflex {
+    display: inline-flex;
+}
+
+.vin--textcenter {
+    text-align: center;
+}
+
+.vin--absolute {
+    position: absolute;
+}
+
+.vindatepicker--dropdown__wrapp {
+    position: absolute;
+    top: 100%;
+    z-index: 2000;
+    width: 100%;
+    border: 1px solid var(--calendar__border);
+    background: var(--calendar__bg);
+    padding: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.vindatepicker--dropdown__wrapp tbody td {
+    border: 1px solid var(--td__border);
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    font-family: var(--calendar__fontfamily);
+    font-size: 13px;
+    -webkit-transition: var(--transform__transition);
+    -moz-transition: var(--transform__transition);
+    -ms-transition: var(--transform__transition);
+    -o-transition: var(--transform__transition);
+    transition: var(--transform__transition);
+}
+
+.vindatepicker--dropdown__wrapp tbody td.vindatepicker--current__date,
+.vindatepicker--dropdown__wrapp tbody td.vindatepicker--current__month,
+.vindatepicker--dropdown__wrapp tbody td:hover,
+.vintimepicker--time__list .vintimepicker--time__current,
+.vintimepicker--time__list .vintimepicker--time__current:hover,
+.vindatepicker--current__year,
+.vindatepicker--current__year:hover {
+    background: var(--td__currentdate);
+    color: var(--td__currentdate__text);
+}
+
+.vindatepicker--dropdown__wrapp tbody td.vindatepicker--selected__date,
+.vindatepicker--dropdown__wrapp tbody td.vindatepicker--selected__month,
+.vindatepicker--dropdown__wrapp tbody td.vindatepicker--selected__date:hover,
+.vindatepicker--dropdown__wrapp tbody td.vindatepicker--selected__month:hover,
+.vindatepicker--dropdown__wrapp tbody td.vindatepicker--selected__from,
+.vindatepicker--dropdown__wrapp tbody td.vindatepicker--selected__to,
+.vindatepicker--dropdown__wrapp tbody td.vindatepicker--selected__from:hover,
+.vindatepicker--dropdown__wrapp tbody td.vindatepicker--selected__to:hover,
+.vintimepicker--time__list .vindatepicker--selected__date,
+.vintimepicker--time__list .vindatepicker--selected__date:hover {
+    background: var(--td__selecteddate);
+    color: var(--pure__blackcolor);
+}
+
+.vindatepicker--dropdown__wrapp tbody td:empty {
+    visibility: hidden;
+}
+
+.vindatepicker--dropdown__wrapp tbody td.disabled,
+.vindatepicker--dropdown__wrapp tbody td.vindatepicker--headernav__next,
+.vindatepicker--dropdown__wrapp tbody td.vindatepicker--headernav__prev,
+.vindatepicker--dropdown__wrapp tbody td.less__date {
+    background: transparent;
+    color: var(--gray__color9);
+    cursor: not-allowed;
+}
+
+.vindatepicker--dropdown__wrapp table {
+    width: 100%;
+}
+
+.vindatepicker--dropdown__wrapp__headernav {
+    gap: 3px;
+    padding: 2px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    -webkit-transition: var(--transform__transition);
+    -moz-transition: var(--transform__transition);
+    -ms-transition: var(--transform__transition);
+    -o-transition: var(--transform__transition);
+    transition: var(--transform__transition);
+    font-family: var(--calendar__fontfamily);
+    font-size: 13px;
+}
+
+.vindatepicker--dropdown__wrapp__headernav button,
+.vindatepicker--dropdown__wrapp__headernav span {
+    width: 20px;
+    height: 40px;
+    line-height: 27px;
+    font-weight: bold;
+    background: var(--calendar__headerbg);
+    border-radius: 4px;
+    color: var(--pure__blackcolor);
+    padding: 8px 5px;
+    -webkit-transition: var(--transform__transition);
+    -moz-transition: var(--transform__transition);
+    -ms-transition: var(--transform__transition);
+    -o-transition: var(--transform__transition);
+    transition: var(--transform__transition);
+}
+
+.datepicker-visible.container__datepicker input {
+    border-radius: 10px 10px 0 0;
+    -webkit-transition: var(--transform__transition);
+    -moz-transition: var(--transform__transition);
+    -ms-transition: var(--transform__transition);
+    -o-transition: var(--transform__transition);
+    transition: var(--transform__transition);
+}
+
+.vindaterangepicker--calendar {
+    width: 100%;
+    gap: 10px;
+}
+
+.vintimepicker--time__list {
+    max-height: 200px;
+    overflow: hidden auto;
+}
+
+.vintimepicker--time__listitem {
+    border-bottom: 1px solid var(--calendar__headerbg);
+    padding: 10px;
+    cursor: pointer;
+    -webkit-transition: var(--transform__transition);
+    -moz-transition: var(--transform__transition);
+    -ms-transition: var(--transform__transition);
+    -o-transition: var(--transform__transition);
+    transition: var(--transform__transition);
+}
+
+.vintimepicker--time__listitem:hover {
+    background: var(--calendar__headerbg);
+    color: var(--primary-btn-clr);
+    -webkit-transition: var(--transform__transition);
+    -moz-transition: var(--transform__transition);
+    -ms-transition: var(--transform__transition);
+    -o-transition: var(--transform__transition);
+    transition: var(--transform__transition);
+}
+
+.vintimepicker--time__list .vin__time__item:last-of-type {
+    border-bottom: 0;
+}
+
+.vindatepicker--dropdown__wrapp .vindatepicker--timepicker {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--calendar__headerbg);
+    z-index: 20;
+}
+
+.vindatepicker--timepicker__select {
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+}
+
+.vindatepicker--dropdown__wrapp .vindatepicker--time__toggle {
+    position: relative;
+    height: 23px;
+    width: 100%;
+    background: var(--calendar__headerbg);
+}
+
+.container__datepicker .vindatepicker--dropdown__wrapp .vindatepicker--time__toggle i {
+    top: 0;
+    right: 0;
+    transform: none;
+    left: 0;
+    margin: 0 auto;
+    color: var(--pure__blackcolor);
+    height: 100%;
+    line-height: unset;
+}
+
+.vindatepicker--dropdown__wrapp .vindatepicker--time__control {
+    flex-direction: column;
+    width: 100%;
+}
+
+.vindatepicker--time__controlselect {
+    width: 100%;
+}
+
+.vindatepicker--time__ampm {
+    width: 100%;
+}
+
+.vindatepicker--time__ampm .vindatepicker--time__unit,
+.vindatepicker--time__ampm .vintimepicker--time__col {
+    flex-direction: column;
+}
+
+.ampm-val {
+    width: auto;
+    display: inline-flex;
+    background: var(--pure__blackcolor);
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+.vindatepicker--dropdown__wrapp .vindatepicker--time__unit,
+.vindatepicker--dropdown__wrapp .vintimepicker--time__col {
+    flex-direction: column;
+}
+
+.vindatepicker--apply__time,
+.vintimepicker--time__actions {
+    width: 100%;
+    background: var(--calendar__bg);
+    padding: 5px 0;
+}
+
+.vindatepicker--apply__time button,
+.vintimepicker--time__actions button {
+    width: 100%;
+    height: 100%;
+}
+
+.vintimepicker--time__arrow {
+    background: var(--pure__blackcolor);
+    padding: 14px 0;
+}
+
+.vindatepicker--dropdown__wrapp svg {
+    width: 100%;
+    height: 200px;
+}
+
+
+.vintimepicker--round__clock {
+    background: var(--calendar__headerbg);
+}
+
+.vintimepicker--circle__hour,
+.vintimepicker--circle__minute {
+    cursor: pointer;
+    pointer-events: all;
+    user-select: none;
+    fill: transparent;
+    font-size: 18px;
+}
+
+.vin--daterange__calendar {
+    width: 50%;
+}
+
+.vintimepicker--circle__hourtext,
+.vintimepicker--circle__minute text {
+    stroke: var(--pure__blackcolor);
+}
+
+.vintimepicker--circle__hoursbg,
+.vintimepicker--circle__minutesbg {
+    fill: transparent;
+    stroke: var(--calendar__headerbg);
+    stroke-width: 4px;
+    stroke-dasharray: 4 2;
+}
+
+#vintimepicker--hour__indicators,
+#vintimepicker--hour__knob,
+#vintimepicker--minute__indicators,
+#vintimepicker--minute__knob {
+    stroke: var(--white__bgrcolor);
+    fill: var(--white__bgrcolor);
+}
+
+.vindatepicker--time__ampmgroup {
+    position: relative;
+    background: var(--calendar__headerbg);
+    border-radius: 25px;
+    padding: 3px;
+    gap: 5px;
+    border: 1px solid var(--white__bgrcolor);
+}
+
+.vindatepicker--timeampm__btn {
+    position: relative;
+    z-index: 2;
+    padding: 2px 9px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-weight: bold;
+    -webkit-transition: var(--opacity__delay);
+    -moz-transition: var(--opacity__delay);
+    -ms-transition: var(--opacity__delay);
+    -o-transition: var(--opacity__delay);
+    transition: var(--opacity__delay);
+    border-radius: 20px;
+}
+
+.vindatepicker--timeampm__btn.active {
+    color: var(--white__bgrcolor);
+}
+
+.vindatepicker--timeampm__btnactive-bg {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: calc(50% - 3px);
+    height: calc(100% - 7px);
+    background: var(--pure__blackcolor);
+    border-radius: 20px;
+    z-index: 1;
+    -webkit-transition: var(--transform__transition);
+    -moz-transition: var(--transform__transition);
+    -ms-transition: var(--transform__transition);
+    -o-transition: var(--transform__transition);
+    transition: var(--transform__transition);
+}
+
+.vintimepicker--circle__hoursbg,
+.vintimepicker--circle__minutesbg,
+.vintimepicker--circle__hwrapp,
+.vintimepicker--circle__mwrapp {
+    opacity: 1;
+    -webkit-transition: var(--opacity__delay);
+    -moz-transition: var(--opacity__delay);
+    -ms-transition: var(--opacity__delay);
+    -o-transition: var(--opacity__delay);
+    transition: var(--opacity__delay);
+}
+
+.vintimepicker--circle__hidden {
+    display: none;
+    pointer-events: none;
+}
+
+#vintimepicker--hour__indicators,
+#vintimepicker--minute__indicators,
+#vintimepicker--hour__knob,
+#vintimepicker--minute__knob {
+    -webkit-transition: var(--opacity__delay);
+    -moz-transition: var(--opacity__delay);
+    -ms-transition: var(--opacity__delay);
+    -o-transition: var(--opacity__delay);
+    transition: var(--opacity__delay);
+}
+
+.vintimepicker--circle__hourbg,
+.vintimepicker--circle__minutebg {
+    fill: var(--white__bgrcolor);
+    stroke-width: 2px;
+    r: 20;
+}
+
+.vintimepicker--circle__hour text,
+.vintimepicker--circle__minute text {
+    fill: var(--pure__blackcolor);
+    font-weight: bold;
+}
+
+.datepicker-visible.container__datepicker .vindatepicker--dropdown__wrapp input,
+.vindatepicker--dropdown__wrapp input {
+    border-radius: 0 10px 0 10px;
+}
+
+.cls_ActiveMnu .container__datepicker .vindatepicker--dropdown__wrapp input,
+.vindatepicker--dropdown__wrapp input {
+    border: 1px solid var(--calendar__bg);
+    color: var(--calendar__bg);
+}
+
+.vintimepicker--circle__timeinputs span {
+    color: var(--calendar__bg);
+}

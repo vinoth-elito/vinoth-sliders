@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Vinoth's customizable date and time picker. User-friendly, responsive, and easy to integrate for web projects.">
+    <meta property="og:title" content="Vinoth's Date/Time Pickers">
+    <meta property="og:description"
+        content="Vinoth's customizable date and time picker. User-friendly, responsive, and easy to integrate for web projects.">
+    <meta property="og:image"
+        content="https://cdn.jsdelivr.net/gh/vinoth-elito/vin--datepicker__container@main/images/og-image.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:url" content="https://vinothdatepicker.vercel.app/">
+    <meta property="og:type" content="website">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="theme-color" content="#1e1e1e">
+    <meta name="msapplication-TileColor" content="#1e1e1e">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Vinoth's Pickers</title>
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="https://cdn.jsdelivr.net/gh/vinoth-elito/vin--datepicker__container@main/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="https://cdn.jsdelivr.net/gh/vinoth-elito/vin--datepicker__container@main/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="https://cdn.jsdelivr.net/gh/vinoth-elito/vin--datepicker__container@main/favicon_io/favicon-16x16.png">
+    <link rel="shortcut icon"
+        href="https://cdn.jsdelivr.net/gh/vinoth-elito/vin--datepicker__container@main/favicon_io/favicon.ico">
+    <link id="fa-css" rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="css/editor.css">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    </noscript>
+
+</head>
+
+<body>
+    <div id="page-loader">
+        <div class="page--loader__cnt">
+            <img src="https://cdn.jsdelivr.net/gh/vinoth-elito/vin--datepicker__container@main/images/og-image.webp"
+                alt="Loading..." fetchpriority="high">
+        </div>
+    </div>
+    <div id="loading-message">
+        <span id="main__typing--text"></span>
+    </div>
+    <div class="siteheader">
+        <header>
+            <div class="sitheader--logo">
+                <picture>
+                    <source
+                        srcset="https://cdn.jsdelivr.net/gh/vinoth-elito/vin--datepicker__container@main/images/og-image.avif"
+                        type="image/avif">
+                    <source
+                        srcset="https://cdn.jsdelivr.net/gh/vinoth-elito/vin--datepicker__container@main/images/og-image.webp"
+                        type="image/webp">
+                    <img src="https://cdn.jsdelivr.net/gh/vinoth-elito/vin--datepicker__container@main/images/og-image.png"
+                        alt="Logo" width="30" height="30" loading="lazy" decoding="async">
+                </picture>
+            </div>
+            <div class="siteheader--text">
+                <h1>Date/Time/Month/Year Pickers</h1>
+                <span>Alpha Devs</span>
+            </div>
+            <div class="editors--switch">
+                <h2>Change View</h2>
+                <button id="view-switcher-button" title="Change View" class="Button-module_root-xw+9D">
+                    <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+                        class="EditorHeaderViewSwitcher_iconPen-jP26l">
+                        <path
+                            d="M0 9.002C0 8.45.455 8 .992 8h18.016c.548 0 .992.456.992 1.002v9.996c0 .553-.455 1.002-.992 1.002H.992C.444 20 0 19.544 0 18.998zm0-8C0 .45.451 0 .99 0h4.02A.99.99 0 0 1 6 1.003v4.994C6 6.551 5.549 7 5.01 7H.99A.99.99 0 0 1 0 5.997zm7 0C7 .45 7.451 0 7.99 0h4.02A.99.99 0 0 1 13 1.003v4.994C13 6.551 12.549 7 12.01 7H7.99A.99.99 0 0 1 7 5.997zm7 0C14 .45 14.451 0 14.99 0h4.02A.99.99 0 0 1 20 1.003v4.994C20 6.551 19.549 7 19.01 7h-4.02A.99.99 0 0 1 14 5.997z">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+    </div>
+    <div class="editor-container editor-left" style="visibility:hidden;">
+        <div class="editor-sidebar">
+            <button data-editor="html-panel" class="active"><i class="fa fa-code"></i></button>
+            <button data-editor="css-panel"><i class="fa fa-paint-brush"></i></button>
+            <button data-editor="js-panel"><i class="fa fa-bolt"></i></button>
+        </div>
+        <div class="editors">
+            <div class="editor-panel active" id="html-panel">
+                <div class="editor-header">HTML</div>
+                <label for="html-editor" class="sr-only">HTML Editor</label>
+                <textarea id="html-editor" spellcheck="false"></textarea>
+            </div>
+            <div class="editor-panel" id="css-panel">
+                <div class="editor-header">CSS</div>
+                <label for="css-editor" class="sr-only">CSS Editor</label>
+                <textarea id="css-editor" spellcheck="false"></textarea>
+            </div>
+            <div class="editor-panel" id="js-panel">
+                <div class="editor-header">JS</div>
+                <label for="js-editor" class="sr-only">JavaScript Editor</label>
+                <textarea id="js-editor" spellcheck="false"></textarea>
+            </div>
+            <div class="resizer" id="resizer"></div>
+        </div>
+
+        <div class="preview-panel">
+            <div class="editor-header">Live Preview</div>
+            <iframe id="live-preview" title="Live preview of your HTML, CSS, and JS output"></iframe>
+        </div>
+    </div>
+    <script>
+        window.$jqlibraryURL = "https://code.jquery.com/jquery-3.7.1.min.js";
+        const cacheBuster = Date.now(),
+            script = document.createElement("script");
+        script.src = window.$jqlibraryURL + "?v=" + cacheBuster;
+        script.onload = function () {
+            ["js/editorpreview.js", "js/datetimepicker.js", "js/datepicker.js", "js/monthyearpicker.js", "js/timepicker.js", "js/daterangepicker.js"].forEach(src => {
+                const s = document.createElement("script");
+                s.src = src + "?v=" + cacheBuster,
+                    document.head.appendChild(s)
+            })
+        };
+        document.head.appendChild(script);
+    </script>
+</body>
+
+</html>
