@@ -1556,7 +1556,7 @@ async function loadAll() {
     );
     const cssEditor = document.getElementById('css-editor');
     const cssUrls = [
-        `https://vinoth-elito.github.io/vin--datepicker__container/css/preview.css?v=${cacheBuster}`
+        `https://vinoth-elito.github.io/vinoth-sliders/css/preview.css?v=${cacheBuster}`
     ];
 
     cssUrls.forEach(url => {
@@ -1577,7 +1577,7 @@ async function loadAll() {
     const htmlEditor = document.getElementById('html-editor');
     const rows = [
         [
-            `slider.html?v=${cacheBuster}`,
+            `https://vinoth-elito.github.io/vinoth-sliders/slider.html?v=${cacheBuster}`,
             `https://vinoth-elito.github.io/vin--datepicker__container/timepicker.html?v=${cacheBuster}`,
             `https://vinoth-elito.github.io/vin--datepicker__container/timepickerarrow.html?v=${cacheBuster}`,
             `https://vinoth-elito.github.io/vin--datepicker__container/timepickercircle.html?v=${cacheBuster}`,
