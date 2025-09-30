@@ -1,4 +1,8 @@
 function attachResize($slider, $track, init) {
+    if (!$slider || !$slider.length) {
+        return;
+    }
+
     let resizeTimeout;
     let lastWidth = $(window).width();
     let id = $slider.attr('id');
