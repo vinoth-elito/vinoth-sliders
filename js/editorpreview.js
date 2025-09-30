@@ -1579,20 +1579,15 @@ async function loadAll() {
     const htmlEditor = document.getElementById('html-editor');
     const rows = [
         [
-            `https://vinoth-elito.github.io/vin--datepicker__container/slider1.html?v=${cacheBuster}`,
-            `https://vinoth-elito.github.io/vin--datepicker__container/timepicker.html?v=${cacheBuster}`,
-            `https://vinoth-elito.github.io/vin--datepicker__container/timepickerarrow.html?v=${cacheBuster}`,
-            `https://vinoth-elito.github.io/vin--datepicker__container/timepickercircle.html?v=${cacheBuster}`,
-            `https://vinoth-elito.github.io/vin--datepicker__container/monthyearpicker.html?v=${cacheBuster}`,
-            `https://vinoth-elito.github.io/vin--datepicker__container/datetimepicker.html?v=${cacheBuster}`
-        ],
-        [
-            `https://vinoth-elito.github.io/vin--datepicker__container/daterangepicker.html?v=${cacheBuster}`,
-            `https://vinoth-elito.github.io/vin--datepicker__container/daterangepickersingle.html?v=${cacheBuster}`
-        ],
-        [
-            `https://vinoth-elito.github.io/vin--datepicker__container/daterangepicker_custom.html?v=${cacheBuster}`
+            `https://vinoth-elito.github.io/vinoth-sliders/slider1.html?v=${cacheBuster}`,
         ]
+        // [
+        //     `https://vinoth-elito.github.io/vin--datepicker__container/daterangepicker.html?v=${cacheBuster}`,
+        //     `https://vinoth-elito.github.io/vin--datepicker__container/daterangepickersingle.html?v=${cacheBuster}`
+        // ],
+        // [
+        //     `https://vinoth-elito.github.io/vin--datepicker__container/daterangepicker_custom.html?v=${cacheBuster}`
+        // ]
 
     ];
     let finalHTML = '';
