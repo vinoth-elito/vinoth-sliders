@@ -115,7 +115,7 @@
             script = document.createElement("script");
         script.src = window.$jqlibraryURL + "?v=" + cacheBuster;
         script.onload = function () {
-            ["js/editorpreview.js", "js/sliders.js", "js/datepicker.js", "js/monthyearpicker.js", "js/timepicker.js", "js/daterangepicker.js"].forEach(src => {
+            ["js/editorpreview.js", "js/sliders.js"].forEach(src => {
                 const s = document.createElement("script");
                 s.src = src + "?v=" + cacheBuster,
                     document.head.appendChild(s)

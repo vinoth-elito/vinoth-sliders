@@ -1,4 +1,9 @@
 function attachResize($slider, $track, init) {
+    if (!$slider || !$slider.length) {
+        console.warn("attachResize called without valid $slider");
+        return;
+    }
+
     let resizeTimeout;
     let lastWidth = $(window).width();
     let id = $slider.attr('id');
@@ -8,6 +13,7 @@ function attachResize($slider, $track, init) {
         }
         id = $slider.data('uid');
     }
+
     let ns = `.resize-${id}`;
     $(window).off(`resize${ns} orientationchange${ns}`);
     $(window).on(`resize${ns} orientationchange${ns}`, function () {
@@ -23,8 +29,10 @@ function attachResize($slider, $track, init) {
             });
         }, 200);
     });
+
     init(0);
 }
+
 function CustomAppSlider(context = document) {
     const defaults = {
         direction: 'horizontal',

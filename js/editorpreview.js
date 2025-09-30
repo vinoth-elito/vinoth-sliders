@@ -33,11 +33,7 @@ async function updatePreview() {
         scriptEl.textContent = jsEditor.value;
         // doc.body.appendChild(scriptEl);
         const pickerScripts = [
-            "js/datetimepicker.js",
-            "js/datepicker.js",
-            "js/monthyearpicker.js",
-            "js/timepicker.js",
-            "js/daterangepicker.js"
+            "js/sliders.js",
         ];
         let loadedCount = 0;
         pickerScripts.forEach(src => {
@@ -48,87 +44,21 @@ async function updatePreview() {
                 if (loadedCount === pickerScripts.length) {
                     const initScript = doc.createElement('script');
                     initScript.textContent = `
-                        if (typeof initVinDatePickers === 'function') {
-                            initVinDatePickers();
+                        if (typeof attachResize === 'function') {
+                            attachResize();
                         }
                     `;
                     doc.body.appendChild(initScript);
-                    const handlers = {
-                        ".vindatetimepicker input": "showDateTimePicker",
-                        ".vindatepicker input": "showDatePicker",
-                        ".vinmonthyearpicker input": "showMonthYearPicker",
-                        ".vintimepicker input": "showTimePicker",
-                        ".vindatepicker input": "showDatePicker"
-                    };
-                    let handlerCode = '';
-                    for (const selector in handlers) {
-                        const funcName = handlers[selector];
-                        handlerCode += `
-                            (function($){
-                                $("body").on("click", "${selector}", function () {
-                                    let $input = $(this);
-                                    if (typeof window["${funcName}"] === "function") {
-                                        window["${funcName}"]($input);
-                                    }
-                                });
-                            })(window.jQuery);
-                        `;
-                    }
-                    handlerCode += `
-                        (function($){
-                            $("body").on("focus", ".vindaterange--from__date, .vindaterange--to__date", function () {
-                                let $input = $(this);
-                                if (typeof window["showDateRangePicker"] === "function") {
-                                    window["showDateRangePicker"]($input);
-                                }
-                            });
-                        })(window.jQuery);
-                    `;
-                    const clickScript = doc.createElement('script');
-                    clickScript.textContent = handlerCode;
-                    doc.body.appendChild(clickScript);
                     const codeScript = doc.createElement('script');
                     codeScript.textContent = `
                         window.componentFunctionMap = window.componentFunctionMap || {
-                            '.vindatepicker': {
-                                func: 'showDatePicker',
-                                funccommon: 'initVinDatePickers',
-                                event: '$("body").on("click", ".vindatepicker input", function () {' +
-                                    'let $input = $(this);' +
-                                    'showDatePicker($input);' +
-                                    '});'
-                            },
-                            '.vintimepicker': {
-                                func: 'showTimePicker',
-                                funccommon: 'initVinDatePickers',
-                                event: '$("body").on("click", ".vintimepicker input", function () {' +
-                                    'let $input = $(this);' +
-                                    'showTimePicker($input);' +
-                                    '});'
-                            },
-                            '.vindatetimepicker': {
-                                func: 'showDateTimePicker',
-                                funccommon: 'initVinDatePickers',
-                                event: '$("body").on("click", ".vindatetimepicker input", function () {' +
-                                    'let $input = $(this);' +
-                                    'showDateTimePicker($input);' +
-                                    '});'
-                            },
-                            '.vinmonthyearpicker': {
-                                func: 'showMonthYearPicker',
-                                funccommon: 'initVinDatePickers',
-                                event: '$("body").on("click", ".vinmonthyearpicker input", function () {' +
-                                    'let $input = $(this);' +
-                                    'showMonthYearPicker($input);' +
-                                    '});'
-                            },
-                            '.vindaterangepicker': {
-                                func: 'showDateRangePicker',
-                                funccommon: 'initVinDatePickers',
-                                event: '$(".vindaterange--from__date, .vindaterange--to__date").on("focus", function () {' +
-                                    'showDateRangePicker($(this));' +
-                                    '});'
-                            },
+                            '.vincuzslider': {
+                                func: 'CustomAppSlider',
+                                funccommon: 'attachResize',
+                                event:'$(".cuz__slider").each(function () {'+
+                                        'CustomAppSlider($(this));'+
+                                    '});'    
+                            }
                         };
 
                         function getPickerCode(selector) {
@@ -259,6 +189,14 @@ async function updatePreview() {
                                 indicator.style.transition = 'transform 0.3s ease, width 0.3s ease';
                                 tabs.appendChild(indicator);
                                 codeContainer.appendChild(tabs);
+                                function formatHTML(htmlString) {
+                                    const textarea = document.createElement('textarea');
+                                    textarea.innerHTML = htmlString;
+                                    const decoded = textarea.value;
+                                    return decoded
+                                        .replace(/></g, '>\\n<')
+                                        .replace(/^\s+|\s+$/g, '');
+                                }
                                 function createTabWrapper(tabName, content, pickerSelector = '') {
                                     const wrapper = document.createElement('div');
                                     wrapper.style.display = tabName === 'HTML' ? 'block' : 'none';
@@ -271,7 +209,7 @@ async function updatePreview() {
                                     if (tabName === 'JS' && pickerSelector) {
                                         pre.textContent = getPickerCode(pickerSelector);
                                     } else {
-                                        pre.textContent = content;
+                                        pre.textContent = formatHTML(content);
                                     }
                                     const copyBtn = document.createElement('button');
                                     copyBtn.innerHTML = '<i class="fa fa-copy"></i> Copy Code';
@@ -348,10 +286,10 @@ async function updatePreview() {
                                     if (existingOverlay) existingOverlay.remove();
                                 };
                                     
-                                htmlTab.addEventListener('click', () => {
-                                    removeSearchUI();
-                                    activateTab(htmlTab, htmlTabContent, htmlContent);
-                                });
+                                    htmlTab.addEventListener('click', () => {
+                                        removeSearchUI();
+                                        activateTab(htmlTab, htmlTabContent, formatHTML(htmlContent));
+                                    });
 
                                 cssTab.addEventListener('click', () => {
                                     removeSearchUI();
@@ -373,7 +311,7 @@ async function updatePreview() {
                                         const funccommonText = getFunctionText(jsEditorContent, comp.funccommon);
                                         if (funccommonText) finalCode += funccommonText + "\\n";
                                         else finalCode += comp.funccommon + "\\n";
-                                         finalCode += "$(document).ready(function() { " + comp.funccommon + "(); });\\n\\n";
+                                         finalCode += "$(document).ready(function() { " + comp.func + "(); });\\n\\n";
                                     }
 
                                     if (comp.event) finalCode += comp.event + "\\n";
@@ -1526,11 +1464,8 @@ window.addEventListener("beforeunload", function (e) {
 function loadScripts() {
     const editor = document.getElementById('js-editor');
     const functionsToInclude = [
-        'showDateTimePicker',
-        'showDatePicker',
-        'showMonthYearPicker',
-        'showTimePicker',
-        'showDateRangePicker'
+        'attachResize',
+        'CustomAppSlider'
     ];
     let combinedCode = '';
     functionsToInclude.forEach(funcName => {
@@ -1538,9 +1473,13 @@ function loadScripts() {
             combinedCode += window[funcName].toString() + '\n\n';
         }
     });
-    if (typeof window.initVinDatePickers === 'function') {
-        combinedCode += window.initVinDatePickers.toString() + '\n\n';
-        combinedCode += '$(document).ready(function() {\n    initVinDatePickers();\n});\n';
+    if (typeof window.attachResize === 'function') {
+        combinedCode += '$(".cuz__slider").each(function () {\n';
+        combinedCode += '    CustomAppSlider($(this));\n';
+        combinedCode += '});\n';
+        combinedCode += '$(document).ready(function() {\n';
+        combinedCode += '    CustomAppSlider();\n';
+        combinedCode += '});\n';
     }
     editor.value = combinedCode;
 }
@@ -1616,10 +1555,19 @@ async function loadAll() {
         stopFlag
     );
     const cssEditor = document.getElementById('css-editor');
-    const cssUrl = `https://vinoth-elito.github.io/vin--datepicker__container/css/preview.css?v=${cacheBuster}`;
-    // const cssUrl = `css/preview.css?v=${cacheBuster}`;
+    const cssUrls = [
+        `https://vinoth-elito.github.io/vin--datepicker__container/css/preview.css?v=${cacheBuster}`
+    ];
+
+    cssUrls.forEach(url => {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = url;
+        document.head.appendChild(link);
+    });
+
     try {
-        const res = await fetch(cssUrl, { cache: 'no-store' });
+        const res = await fetch(cssUrls, { cache: 'no-store' });
         cssEditor.value = await res.text();
         updatePreview();
     } catch (e) {
@@ -1629,7 +1577,7 @@ async function loadAll() {
     const htmlEditor = document.getElementById('html-editor');
     const rows = [
         [
-            `https://vinoth-elito.github.io/vinoth-sliders/slider.html?v=${cacheBuster}`,
+            `slider.html?v=${cacheBuster}`,
             `https://vinoth-elito.github.io/vin--datepicker__container/timepicker.html?v=${cacheBuster}`,
             `https://vinoth-elito.github.io/vin--datepicker__container/timepickerarrow.html?v=${cacheBuster}`,
             `https://vinoth-elito.github.io/vin--datepicker__container/timepickercircle.html?v=${cacheBuster}`,
@@ -1666,7 +1614,7 @@ async function loadAll() {
 
     await new Promise(resolve => {
         const interval = setInterval(() => {
-            const allReady = ['showDateTimePicker', 'showDatePicker', 'showMonthYearPicker', 'showTimePicker', 'showDateRangePicker', 'initVinDatePickers']
+            const allReady = ['attachResize', 'CustomAppSlider']
                 .every(fn => typeof window[fn] === 'function');
             if (allReady) {
                 clearInterval(interval);
