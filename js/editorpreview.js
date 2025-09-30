@@ -33,7 +33,11 @@ async function updatePreview() {
         scriptEl.textContent = jsEditor.value;
         // doc.body.appendChild(scriptEl);
         const pickerScripts = [
-            "js/sliders.js",
+            "js/datetimepicker.js",
+            "js/datepicker.js",
+            "js/monthyearpicker.js",
+            "js/timepicker.js",
+            "js/daterangepicker.js"
         ];
         let loadedCount = 0;
         pickerScripts.forEach(src => {
@@ -88,9 +92,54 @@ async function updatePreview() {
                         window.componentFunctionMap = window.componentFunctionMap || {
                             '.vindatepicker': {
                                 func: 'showDatePicker',
-                                funccommon: 'attachResize'
-                            }
+                                funccommon: 'initVinDatePickers',
+                                event: '$("body").on("click", ".vindatepicker input", function () {' +
+                                    'let $input = $(this);' +
+                                    'showDatePicker($input);' +
+                                    '});'
+                            },
+                            '.vintimepicker': {
+                                func: 'showTimePicker',
+                                funccommon: 'initVinDatePickers',
+                                event: '$("body").on("click", ".vintimepicker input", function () {' +
+                                    'let $input = $(this);' +
+                                    'showTimePicker($input);' +
+                                    '});'
+                            },
+                            '.vindatetimepicker': {
+                                func: 'showDateTimePicker',
+                                funccommon: 'initVinDatePickers',
+                                event: '$("body").on("click", ".vindatetimepicker input", function () {' +
+                                    'let $input = $(this);' +
+                                    'showDateTimePicker($input);' +
+                                    '});'
+                            },
+                            '.vinmonthyearpicker': {
+                                func: 'showMonthYearPicker',
+                                funccommon: 'initVinDatePickers',
+                                event: '$("body").on("click", ".vinmonthyearpicker input", function () {' +
+                                    'let $input = $(this);' +
+                                    'showMonthYearPicker($input);' +
+                                    '});'
+                            },
+                            '.vindaterangepicker': {
+                                func: 'showDateRangePicker',
+                                funccommon: 'initVinDatePickers',
+                                event: '$(".vindaterange--from__date, .vindaterange--to__date").on("focus", function () {' +
+                                    'showDateRangePicker($(this));' +
+                                    '});'
+                            },
                         };
+
+                        function getPickerCode(selector) {
+                            const picker = window.componentFunctionMap[selector];
+                            if (!picker) return '';
+                            let code = '';
+                            if (picker.func1) code += "func1: '" + picker.func1 + "', ";
+                            if (picker.func) code += "func: '" + picker.func + "', ";
+                            if (picker.event) code += "event: '" + picker.event + "'";
+                            return code;
+                        }
 
                         function highlightCopiedState(openContainer, pre) {
                             const activeTab = openContainer.querySelector('.tab-btn.active');
@@ -1567,7 +1616,8 @@ async function loadAll() {
         stopFlag
     );
     const cssEditor = document.getElementById('css-editor');
-    const cssUrl = `https://vinoth-elito.github.io/vin--datepicker__container/css/preview.css?v=${cacheBuster}`;
+    // const cssUrl = `https://vinoth-elito.github.io/vin--datepicker__container/css/preview.css?v=${cacheBuster}`;
+    const cssUrl = `css/preview.css?v=${cacheBuster}`;
     try {
         const res = await fetch(cssUrl, { cache: 'no-store' });
         cssEditor.value = await res.text();
@@ -1579,15 +1629,20 @@ async function loadAll() {
     const htmlEditor = document.getElementById('html-editor');
     const rows = [
         [
-            `https://vinoth-elito.github.io/vinoth-sliders/slider.html?v=${cacheBuster}`,
+            `https://vinoth-elito.github.io/vin--datepicker__container/datepicker.html?v=${cacheBuster}`,
+            `https://vinoth-elito.github.io/vin--datepicker__container/timepicker.html?v=${cacheBuster}`,
+            `https://vinoth-elito.github.io/vin--datepicker__container/timepickerarrow.html?v=${cacheBuster}`,
+            `https://vinoth-elito.github.io/vin--datepicker__container/timepickercircle.html?v=${cacheBuster}`,
+            `https://vinoth-elito.github.io/vin--datepicker__container/monthyearpicker.html?v=${cacheBuster}`,
+            `https://vinoth-elito.github.io/vin--datepicker__container/datetimepicker.html?v=${cacheBuster}`
+        ],
+        [
+            `https://vinoth-elito.github.io/vin--datepicker__container/daterangepicker.html?v=${cacheBuster}`,
+            `https://vinoth-elito.github.io/vin--datepicker__container/daterangepickersingle.html?v=${cacheBuster}`
+        ],
+        [
+            `https://vinoth-elito.github.io/vin--datepicker__container/daterangepicker_custom.html?v=${cacheBuster}`
         ]
-        // [
-        //     `https://vinoth-elito.github.io/vin--datepicker__container/daterangepicker.html?v=${cacheBuster}`,
-        //     `https://vinoth-elito.github.io/vin--datepicker__container/daterangepickersingle.html?v=${cacheBuster}`
-        // ],
-        // [
-        //     `https://vinoth-elito.github.io/vin--datepicker__container/daterangepicker_custom.html?v=${cacheBuster}`
-        // ]
 
     ];
     let finalHTML = '';
