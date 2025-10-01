@@ -390,12 +390,12 @@ async function updatePreview() {
                             }
                             if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "f") {
                                 e.preventDefault();
-                                if (window.parent?.openPanelSearch) {
+                                if (window.parent?.openPanelSearchiframe) {
                                     const existingOverlay = openContainer.querySelector(".panel-search-overlay");
                                     if (existingOverlay) existingOverlay.remove();
                                     const existingHighlightDiv = openContainer.querySelector(".highlight-div");
                                     if (existingHighlightDiv) existingHighlightDiv.remove();
-                                    window.parent.openPanelSearch(openContainer, activePre);
+                                    window.parent.openPanelSearchiframe(openContainer, activePre);
                                 }
                             }
                         });
@@ -1314,22 +1314,42 @@ window.openPanelSearch = function (panel, target) {
     function highlightCurrentMatch() {
         highlightDiv.querySelectorAll('.highlight-match.current-match')
             .forEach(el => el.classList.remove('current-match'));
+
         if (!matches.length) {
             counter.style.display = 'none';
             return;
         }
+
         counter.style.display = 'inline-block';
         const spans = highlightDiv.querySelectorAll('.highlight-match');
         const span = spans[currentIndex];
         if (!span) return;
+
         span.classList.add('current-match');
         const match = matches[currentIndex];
-        setSelection(match.start, match.end);
-        const beforeText = getContent().substring(0, match.start);
-        const lineHeight = parseInt(window.getComputedStyle(target).lineHeight) || 16;
-        target.scrollTop = (beforeText.split('\n').length - 1) * lineHeight;
+
+        if (isTextarea) {
+            target.setSelectionRange(match.start, match.end);
+            requestAnimationFrame(() => {
+                const textareaStyle = window.getComputedStyle(target);
+                const lineHeight = parseInt(textareaStyle.lineHeight) || 16;
+                const paddingTop = parseInt(textareaStyle.paddingTop) || 0;
+                const beforeMatch = target.value.substring(0, match.start);
+                const linesBefore = beforeMatch.split("\n").length - 1;
+                let scrollPos = linesBefore * lineHeight + paddingTop - target.clientHeight / 2 + lineHeight / 2;
+                scrollPos = Math.max(0, Math.min(scrollPos, target.scrollHeight - target.clientHeight));
+                target.scrollTop = scrollPos;
+            });
+        } else {
+            setSelection(match.start, match.end);
+            requestAnimationFrame(() => {
+                span.scrollIntoView({ block: "center", behavior: "smooth" });
+            });
+        }
+
         counter.textContent = `${currentIndex + 1} / ${matches.length}`;
     }
+
     function nextMatch() {
         if (!matches.length) return;
         currentIndex = (currentIndex + 1) % matches.length;
@@ -1429,6 +1449,318 @@ window.openPanelSearch = function (panel, target) {
     });
     updateHighlights();
 };
+
+
+window.openPanelSearchiframe = function (panel, target) {
+    document.querySelectorAll('.panel-search-overlay, .highlight-div').forEach(el => el.remove());
+    const isTextarea = target.tagName.toLowerCase() === 'textarea';
+    const getContent = () => isTextarea ? target.value : target.textContent;
+    const setSelection = (start, end) => {
+        if (isTextarea) {
+            target.setSelectionRange(start, end);
+        } else {
+            const range = document.createRange();
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            let remainingStart = start;
+            let remainingEnd = end;
+            const walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT);
+            while (walker.nextNode()) {
+                const node = walker.currentNode;
+                const nodeLength = node.textContent.length;
+                if (remainingStart < nodeLength) {
+                    const rangeStart = remainingStart;
+                    const rangeEnd = Math.min(nodeLength, remainingEnd);
+                    range.setStart(node, rangeStart);
+                    range.setEnd(node, rangeEnd);
+                    sel.addRange(range);
+                    break;
+                } else {
+                    remainingStart -= nodeLength;
+                    remainingEnd -= nodeLength;
+                }
+            }
+        }
+    };
+    const highlightDiv = document.createElement('div');
+    highlightDiv.className = 'highlight-div';
+    highlightDiv.style.position = 'absolute';
+    highlightDiv.style.pointerEvents = 'none';
+    highlightDiv.style.whiteSpace = 'pre-wrap';
+    highlightDiv.style.wordWrap = 'break-word';
+    highlightDiv.style.color = 'transparent';
+    highlightDiv.style.overflow = 'hidden';
+    highlightDiv.style.zIndex = 1;
+    highlightDiv.style.boxSizing = "border-box";
+    const rect = target.getBoundingClientRect();
+    const panelRect = panel.getBoundingClientRect();
+    highlightDiv.style.top = (rect.top - panelRect.top + panel.scrollTop) + 'px';
+    highlightDiv.style.left = (rect.left - panelRect.left + panel.scrollLeft) + 'px';
+    highlightDiv.style.width = '100%';
+    highlightDiv.style.height = rect.height + 'px';
+    panel.appendChild(highlightDiv);
+    target.style.background = 'transparent';
+    target.style.position = 'relative';
+    target.style.zIndex = 2;
+    const overlay = document.createElement('div');
+    overlay.className = 'panel-search-overlay';
+    Object.assign(overlay.style, {
+        position: 'absolute',
+        top: '5px',
+        right: '0',
+        background: 'rgba(255,255,255,0.95)',
+        padding: '4px 6px',
+        borderRadius: '6px',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+        zIndex: 10,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '4px'
+    });
+    const searchMain = document.createElement('div');
+    const form = document.createElement('form');
+    form.id = 'search__popupmain';
+    Object.assign(searchMain.style, {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        opacity: '0',
+        transition: 'transform 0.3s ease, opacity 0.3s ease'
+    });
+    form.addEventListener('click', (e) => {
+        if (e.target.tagName.toLowerCase() === 'button') {
+            e.preventDefault();
+        }
+    });
+    const label = document.createElement('label');
+    label.setAttribute('for', 'search__poptxt');
+    label.textContent = 'Search: ';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = 'search__poptxt';
+    input.placeholder = 'Search text...';
+    Object.assign(input.style, { width: '200px', padding: '4px 8px', fontSize: '14px' });
+    const prevBtn = document.createElement('button'); prevBtn.innerHTML = '⬆';
+    const nextBtn = document.createElement('button'); nextBtn.innerHTML = '⬇';
+    const counter = document.createElement('span');
+    Object.assign(counter.style, { fontSize: '13px', color: '#333', display: 'none' });
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'search-close-btn';
+    closeBtn.innerHTML = '✖';
+    Object.assign(closeBtn.style, { background: 'transparent', border: 'none', fontSize: '14px', cursor: 'pointer' });
+    closeBtn.addEventListener('click', () => {
+        overlay.style.display = 'none';
+        highlightDiv.style.display = 'none';
+        target.style.background = '';
+        target.style.position = '';
+        target.style.zIndex = '';
+    });
+    panel.appendChild(overlay);
+    const searchCountEnd = document.createElement('div');
+    searchCountEnd.className = 'panel__search__countend';
+    Object.assign(searchCountEnd.style, {
+        fontSize: '13px',
+        color: 'red',
+        transition: 'opacity 0.3s ease, transform 0.3s ease',
+        transform: 'translateY(-1px)'
+    });
+    form.append(label, input, prevBtn, nextBtn, counter, closeBtn);
+    searchMain.appendChild(form);
+    overlay.appendChild(searchMain);
+    overlay.append(searchMain, searchCountEnd);
+    requestAnimationFrame(() => {
+        searchMain.style.transform = 'translateX(0)';
+        searchMain.style.opacity = '1';
+    });
+    const noResultsSpan = document.createElement('span');
+    noResultsSpan.textContent = 'No results';
+    noResultsSpan.style.display = 'none';
+    const endResultsSpan = document.createElement('span');
+    endResultsSpan.textContent = 'You are at the end of search results!';
+    endResultsSpan.style.display = 'none';
+    searchCountEnd.append(noResultsSpan, endResultsSpan);
+    input.focus();
+    let matches = [];
+    let currentIndex = -1;
+    function escapeHtml(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    function updateHighlightsiframe() {
+        const term = input.value;
+        matches = [];
+        currentIndex = -1;
+        counter.style.display = 'none';
+
+        const rawText = getContent();
+
+        if (!term) {
+            if (!isTextarea) {
+                target.innerHTML = escapeHtml(rawText);
+            }
+            return;
+        }
+
+        const regex = new RegExp(term.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"), "gi");
+        let matchIndex = 0;
+        let html = rawText.replace(regex, (m) => {
+            matches.push({ index: matchIndex });
+            const cls = (matchIndex === 0) ? "highlight-match current-match" : "highlight-match";
+            matchIndex++;
+            return `<span class="${cls}">${escapeHtml(m)}</span>`;
+        });
+
+        if (!isTextarea) {
+            target.innerHTML = html; // ✅ inject highlights into content
+        } else {
+            // ✅ fallback: use highlightDiv overlay for <textarea>
+            let overlayHtml = "";
+            let lastIndex = 0, match;
+            regex.lastIndex = 0;
+            while ((match = regex.exec(rawText)) !== null) {
+                matches.push({ start: match.index, end: regex.lastIndex });
+                overlayHtml += escapeHtml(rawText.substring(lastIndex, match.index));
+                overlayHtml += `<span class="highlight-match">${escapeHtml(match[0])}</span>`;
+                lastIndex = regex.lastIndex;
+            }
+            overlayHtml += escapeHtml(rawText.substring(lastIndex));
+            highlightDiv.innerHTML = overlayHtml;
+        }
+
+        if (matches.length) {
+            currentIndex = 0;
+            highlightCurrentMatchiframe();
+            counter.style.display = 'inline-block';
+            counter.textContent = `${currentIndex + 1} / ${matches.length}`;
+        } else {
+            counter.style.display = 'none';
+            showMessage('no-results');
+        }
+    }
+    function highlightCurrentMatchiframe() {
+        if (!matches.length) {
+            counter.style.display = 'none';
+            return;
+        }
+
+        // clear previous
+        (isTextarea ? highlightDiv : target)
+            .querySelectorAll('.highlight-match.current-match')
+            .forEach(el => el.classList.remove('current-match'));
+
+        // set current
+        const spans = (isTextarea ? highlightDiv : target).querySelectorAll('.highlight-match');
+        const span = spans[currentIndex];
+        if (!span) return;
+        span.classList.add('current-match');
+
+        // auto-scroll into view like VSCode
+        span.scrollIntoView({ block: "center", behavior: "smooth" });
+
+        counter.textContent = `${currentIndex + 1} / ${matches.length}`;
+    }
+    function nextMatch() {
+        if (!matches.length) return;
+        currentIndex = (currentIndex + 1) % matches.length;
+        highlightCurrentMatchiframe();
+        input.focus({ preventScroll: true });
+    }
+    function prevMatch() {
+        if (!matches.length) return;
+        currentIndex = (currentIndex - 1 + matches.length) % matches.length;
+        highlightCurrentMatchiframe();
+        input.focus({ preventScroll: true });
+    }
+    function showMessage(type) {
+        noResultsSpan.style.display = 'none';
+        endResultsSpan.style.display = 'none';
+        let span = null;
+        if (type === 'no-results') span = noResultsSpan;
+        if (type === 'end-results') span = endResultsSpan;
+        if (!span) return;
+        span.style.display = 'inline';
+        span.style.opacity = '1';
+        span.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        span.style.transform = 'translateY(0)';
+        clearTimeout(span._timeout);
+        span._timeout = setTimeout(() => {
+            span.style.opacity = '0';
+            span.style.transform = 'translateY(-8px)';
+            setTimeout(() => { span.style.display = 'none'; }, 300);
+        }, 2000);
+    }
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (!matches.length) {
+                showMessage('no-results');
+                return;
+            }
+            if (currentIndex < matches.length - 1) {
+                currentIndex++;
+                highlightCurrentMatchiframe();
+            } else {
+                currentIndex = matches.length - 1;
+                highlightCurrentMatchiframe();
+                showMessage('end-results');
+            }
+            input.focus({ preventScroll: true });
+        }
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            hideAllPopups();
+        }
+    });
+    if (overlay) {
+        overlay.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+        document.addEventListener('click', () => {
+            hideAllPopups();
+        });
+    }
+    function setupIframePopupCloser() {
+        const iframe = document.querySelector('iframe');
+        if (!iframe) return;
+        document.addEventListener('click', e => {
+            const rect = iframe.getBoundingClientRect();
+            if (
+                e.clientX < rect.left ||
+                e.clientX > rect.right ||
+                e.clientY < rect.top ||
+                e.clientY > rect.bottom
+            ) {
+                hideAllPopups();
+            }
+        });
+        function attachInsideListener() {
+            try {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                if (!iframeDoc) return;
+                iframeDoc.removeEventListener('click', hideAllPopups);
+                iframeDoc.addEventListener('click', hideAllPopups);
+            } catch (err) {
+                console.warn("Cross-origin iframe - cannot attach click listener inside.", err);
+            }
+        }
+        iframe.addEventListener('load', attachInsideListener);
+        if (iframe.contentDocument?.readyState === 'complete') {
+            attachInsideListener();
+        }
+    }
+    setupIframePopupCloser();
+    input.addEventListener('input', updateHighlightsiframe);
+    nextBtn.addEventListener('click', nextMatch);
+    prevBtn.addEventListener('click', prevMatch);
+    target.addEventListener('scroll', () => {
+        highlightDiv.scrollTop = target.scrollTop;
+    });
+    updateHighlightsiframe();
+};
+
+
+
 document.addEventListener('click', function (e) {
     const iframe = document.querySelector('iframe');
     if (!iframe) return;

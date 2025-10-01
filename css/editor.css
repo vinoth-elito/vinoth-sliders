@@ -253,7 +253,6 @@ body>.editor-container {
     flex-direction: column;
     border-bottom: 1px solid #ccc;
     padding: 0 10px 10px 10px;
-    margin-bottom: 14px;
     position: relative;
 }
 
@@ -333,6 +332,7 @@ textarea {
 
 .preview-panel {
     flex: 1;
+    overflow: hidden;
 }
 
 @media (max-width: 1024px) {
@@ -746,4 +746,10 @@ form#search__popupmain {
 form#search__popupmain label {
     font-size: 12px;
     font-family: sans-serif;
+}
+
+span.highlight-match:last-child {
+    position: relative;
+    display: inline-block;
+    top: -15px;
 }
