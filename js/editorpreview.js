@@ -1887,25 +1887,18 @@ async function loadAll() {
         stopFlag
     );
     const cssEditor = document.getElementById('css-editor');
-    const cssUrls = [
-        `https://raw.githubusercontent.com/vinoth-elito/vinoth-sliders/main/css/preview.css?v=${cacheBuster}`
-    ];
-
-    cssUrls.forEach(url => {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = url;
-        document.head.appendChild(link);
-    });
-
+    const cssUrl = `https://raw.githubusercontent.com/vinoth-elito/vinoth-sliders/main/css/preview.css?v=${cacheBuster}`;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = cssUrl;
+    document.head.appendChild(link);
     try {
-        const res = await fetch(cssUrls, { cache: 'no-store' });
+        const res = await fetch(cssUrl, { cache: 'no-store' });
         cssEditor.value = await res.text();
         updatePreview();
     } catch (e) {
         cssEditor.value = `/* Failed to load CSS: ${e.message} */`;
     }
-
     const htmlEditor = document.getElementById('html-editor');
     const rows = [
         [
