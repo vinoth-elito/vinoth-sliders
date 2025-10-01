@@ -831,8 +831,8 @@ html,
 div,
 section {
     -webkit-user-drag: none;
-    user-select: none;
 }
+
 
 .cuz__slider {
     width: 100%;
