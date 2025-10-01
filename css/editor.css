@@ -242,7 +242,9 @@ body>.editor-container {
 
 @media(max-width:1024px) {
 
-    .panel-resizer {
+    .panel-resizer,
+    .resizer,
+    .resizer-horizontal {
         display: none;
     }
 }

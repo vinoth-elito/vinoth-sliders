@@ -569,6 +569,7 @@ function setupViewSwitcher() {
             panel.style.flex = "";
             panel.style.height = "";
             panel.style.width = "";
+            editors.style.padding = "";
         });
         document.body.style.cursor = "";
         document.body.style.userSelect = "";
@@ -1888,10 +1889,6 @@ async function loadAll() {
     );
     const cssEditor = document.getElementById('css-editor');
     const cssUrl = `https://raw.githubusercontent.com/vinoth-elito/vinoth-sliders/main/css/preview.css?v=${cacheBuster}`;
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = cssUrl;
-    document.head.appendChild(link);
     try {
         const res = await fetch(cssUrl, { cache: 'no-store' });
         cssEditor.value = await res.text();
