@@ -3,6 +3,14 @@ const htmlEditor = document.getElementById('html-editor');
 const cssEditor = document.getElementById('css-editor');
 const jsEditor = document.getElementById('js-editor');
 const livePreview = document.getElementById('live-preview');
+livePreview.addEventListener('load', () => {
+    const doc = livePreview.contentDocument || livePreview.contentWindow.document;
+    doc.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        doc.body.innerHTML = '';
+        updatePreview();
+    });
+});
 async function updatePreview() {
     const doc = livePreview.contentDocument || livePreview.contentWindow.document;
     doc.open();
