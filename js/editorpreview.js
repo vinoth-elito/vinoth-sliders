@@ -1590,7 +1590,6 @@ async function loadAll() {
     let finalHTML = '';
     for (let i = 0; i < rows.length; i++) {
         let style = i != 0 ? ' style="justify-content:left;margin-top:30px;"' : '';
-        rowHTML += `<!-- ${dataTarget} -->\n`;
         let rowHTML = `<div class="input__row"${style}>\n`;
         for (let file of rows[i]) {
             try {
