@@ -747,9 +747,3 @@ form#search__popupmain label {
     font-size: 12px;
     font-family: sans-serif;
 }
-
-span.highlight-match:last-child {
-    position: relative;
-    display: inline-block;
-    top: -15px;
-}
