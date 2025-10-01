@@ -43,6 +43,20 @@ function CustomAppSlider(context = document) {
         breakpoints: {},
         controls: true
     };
+    function applyVerticalImageHeight($slider, settings) {
+        if (settings.direction !== 'vertical' || settings.effect !== 'slide') return;
+        const $targetImg = $slider.find('.cuz__slider__slide img.height__img').first();
+        if (!$targetImg.length) return;
+        function updateHeight() {
+            const renderedHeight = $targetImg[0].getBoundingClientRect().height;
+            if (renderedHeight) {
+                $slider.css("height", renderedHeight + "px");
+            }
+        }
+        updateHeight();
+        $targetImg.on("load", updateHeight);
+        $(window).on("resize", updateHeight);
+    }
     function getSlidesPerView(breakpoints) {
         const w = $(window).width();
         let spv = null;
@@ -155,7 +169,8 @@ function CustomAppSlider(context = document) {
                 $slides.css({
                     position: 'absolute',
                     top: 0, left: 0,
-                    width: '100%', height: '100%',
+                    width: '100%',
+                    // height: '100%',
                     opacity: 0, zIndex: 0,
                     transition: 'opacity 0.5s ease'
                 }).eq(idx).css({ opacity: 1, zIndex: 1 });
@@ -201,6 +216,20 @@ function CustomAppSlider(context = document) {
                 if (!fromDrag) startAuto();
             }, fromDrag ? 0 : 500);
             updateDots();
+            if (settings.controls && !settings.loop) {
+                const $prevBtn = $slider.find('.slider-prev');
+                const $nextBtn = $slider.find('.slider-next');
+
+                $prevBtn.removeClass('disabled');
+                $nextBtn.removeClass('disabled');
+
+                if (idx <= 0) {
+                    $prevBtn.addClass('disabled');
+                }
+                if (idx >= totalSlides - visible) {
+                    $nextBtn.addClass('disabled');
+                }
+            }
             $slides.removeClass('active center');
             const totalOriginal = $slides.not(".cuz__slider__xr").length;
             if (totalOriginal === 0) return;
@@ -229,16 +258,6 @@ function CustomAppSlider(context = document) {
             let settings = getSettings(config);
             visible = getSlidesPerView(settings.breakpoints);
             pct = 100 / visible;
-            // $track.css({
-            //     display: 'flex',
-            //     flexDirection: settings.direction === 'vertical' ? 'column' : 'row',
-            //     transition: 'transform 0.5s ease'
-            // });
-
-            // $slides.css({
-            //     flex: `0 0 ${pct}%`,
-            //     maxWidth: `${pct}%`
-            // });
             if (!preserveIndex) {
                 $track.find('.cuz__slider__slide.cuz__slider__xr').remove();
                 $slides = $track.find('.cuz__slider__slide');
@@ -252,22 +271,6 @@ function CustomAppSlider(context = document) {
                 $track.append($firstClones);
                 $slides = $track.find('.cuz__slider__slide');
             }
-            // if (settings.effect === 'slide' && settings.direction === 'horizontal') {
-            //     const $firstImg = $slides.not('.clone').find('img').first();
-            //     if ($firstImg.length) {
-            //         $firstImg.on('load', function () {
-            //             const w = this.naturalWidth;
-            //             const h = this.naturalHeight;
-            //             if (w && h) {
-            //                 $slider.css("aspect-ratio", w + " / " + h);
-            //                 // clear any fixed height if present
-            //                 $slider.css("height", "");
-            //             }
-            //         }).each(function () {
-            //             if (this.complete) $(this).trigger("load");
-            //         });
-            //     }
-            // }
             const total = $slides.not('.cuz__slider__xr').length;
             function getCurrentBreakpointConfig(breakpoints) {
                 const w = $(window).width();
@@ -435,11 +438,8 @@ function CustomAppSlider(context = document) {
                     flexDirection: settings.direction === 'vertical' ? 'column' : 'row',
                     transition: 'transform 0.5s ease'
                 });
-                // $slides.css({
-                //     flex: `0 0 ${pct}%`,
-                //     maxWidth: `${pct}%`
-                // });
             }
+            applyVerticalImageHeight($slider, settings);
             goTo(idx, true);
             updateDots();
             startAuto();
@@ -522,7 +522,7 @@ function CustomAppSlider(context = document) {
         }
         attachResize($slider, $track, init);
     });
-    // For on drag remove link
+    // drag remove link //
     const dragThreshold = 6;
     $(context).find('.cuz__slider__slide, .casinoLink').each(function () {
         const slide = this;
