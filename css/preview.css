@@ -824,6 +824,16 @@ form#search__popupmain label {
     overflow: hidden;
 }
 
+img,
+a,
+body,
+html,
+div,
+section {
+    -webkit-user-drag: none;
+    user-select: none;
+}
+
 .cuz__slider {
     width: 100%;
     overflow: hidden;
