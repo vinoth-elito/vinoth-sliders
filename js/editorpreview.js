@@ -1867,6 +1867,7 @@ async function loadAll() {
     const rows = [
         [
             `https://raw.githubusercontent.com/vinoth-elito/vinoth-sliders/main/slider1.html?v=${cacheBuster}`,
+
             `https://raw.githubusercontent.com/vinoth-elito/vinoth-sliders/main/slider2.html?v=${cacheBuster}`
         ],
         [
