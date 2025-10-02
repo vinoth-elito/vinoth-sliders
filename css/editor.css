@@ -68,7 +68,6 @@ body>.editor-container {
 }
 
 
-
 #html-editor,
 #css-editor,
 #js-editor {
@@ -560,7 +559,7 @@ header {
 
 #page-loader img {
     width: 150px;
-    height: auto;
+    height: 150px;
     animation: loaderPulse 1.2s infinite;
     border-radius: 50%;
     display: block;
