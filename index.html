@@ -35,7 +35,6 @@
     <noscript>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.statically.io/gh/vinoth-elito/vinoth-sliders/main/css/editor.css">
-        <link rel="stylesheet" href="https://cdn.statically.io/gh/vinoth-elito/vinoth-sliders/main/css/editor.css">
     </noscript>
     <style>
         body {
@@ -126,7 +125,7 @@
             script = document.createElement("script");
         script.src = window.$jqlibraryURL + "?v=" + cacheBuster;
         script.onload = function () {
-            ["https://cdn.statically.io/gh/vinoth-elito/vinoth-sliders/main/js/editorpreview.js", "https://cdn.statically.io/gh/vinoth-elito/vinoth-sliders/main/js/sliders.js"].forEach(src => {
+            ["js/editorpreview.js", "https://cdn.statically.io/gh/vinoth-elito/vinoth-sliders/main/js/sliders.js"].forEach(src => {
                 const s = document.createElement("script");
                 s.src = src + "?v=" + cacheBuster,
                     document.head.appendChild(s)
