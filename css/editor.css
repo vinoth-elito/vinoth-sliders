@@ -10,14 +10,6 @@ html {
     font-family: sans-serif;
 }
 
-body {
-    visibility: hidden;
-}
-
-body.css-ready {
-    visibility: visible;
-}
-
 .editor-container {
     display: flex;
     height: 100vh;
