@@ -914,3 +914,11 @@ form#search__popupmain label {
         left: 160px;
     }
 }
+
+body {
+    visibility: hidden;
+}
+
+body.css-ready {
+    visibility: visible;
+}
