@@ -1580,9 +1580,8 @@ window.openPanelSearchiframe = function (panel, target) {
         });
 
         if (!isTextarea) {
-            target.innerHTML = html; // ✅ inject highlights into content
+            target.innerHTML = html;
         } else {
-            // ✅ fallback: use highlightDiv overlay for <textarea>
             let overlayHtml = "";
             let lastIndex = 0, match;
             regex.lastIndex = 0;
@@ -1611,21 +1610,14 @@ window.openPanelSearchiframe = function (panel, target) {
             counter.style.display = 'none';
             return;
         }
-
-        // clear previous
         (isTextarea ? highlightDiv : target)
             .querySelectorAll('.highlight-match.current-match')
             .forEach(el => el.classList.remove('current-match'));
-
-        // set current
         const spans = (isTextarea ? highlightDiv : target).querySelectorAll('.highlight-match');
         const span = spans[currentIndex];
         if (!span) return;
         span.classList.add('current-match');
-
-        // auto-scroll into view like VSCode
         span.scrollIntoView({ block: "center", behavior: "smooth" });
-
         counter.textContent = `${currentIndex + 1} / ${matches.length}`;
     }
     function nextMatch() {
