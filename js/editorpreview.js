@@ -354,7 +354,7 @@ function buildSrcDoc() {
   ${html}
 
   ${jq}
-  <script src="https://raw.githubusercontent.com/vinoth-elito/vinoth-sliders/main/js/sliders.js?v=${cacheBuster}"></script>
+  <script src="https://cdn.jsdelivr.net/gh/vinoth-elito/vinoth-sliders/js/sliders.js?v=${cacheBuster}"></script>
 
   <script>
     try { ${js} } catch (e) { console.error(e); }
