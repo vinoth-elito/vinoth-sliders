@@ -1855,7 +1855,7 @@ async function loadAll() {
         stopFlag
     );
     const cssEditor = document.getElementById('css-editor');
-    const cssUrl = `https://cdn.statically.io/gh/vinoth-elito/vinoth-sliders/main/css/preview.css?v=${cacheBuster}`;
+    const cssUrl = `https://cdn.jsdelivr.net/gh/vinoth-elito/vinoth-sliders/css/preview.css?v=${cacheBuster}`;
     try {
         const res = await fetch(cssUrl, { cache: 'no-store' });
         cssEditor.value = await res.text();
