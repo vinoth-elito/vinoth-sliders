@@ -1863,7 +1863,6 @@ async function loadAll() {
     } catch (e) {
         cssEditor.value = `/* Failed to load CSS: ${e.message} */`;
     }
-    const htmlEditor = document.getElementById('html-editor');
     const rows = [
         [
             `https://raw.githubusercontent.com/vinoth-elito/vinoth-sliders/main/slider1.html?v=${cacheBuster}`,
