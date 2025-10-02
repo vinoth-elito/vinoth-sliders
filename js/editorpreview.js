@@ -354,7 +354,7 @@ function buildSrcDoc() {
   ${html}
 
   ${jq}
-  <script src="https://cdn.statically.io/gh/vinoth-elito/vinoth-sliders/main/js/sliders.js?v=${cacheBuster}"></script>
+  <script src="https://vinoth-elito.github.io/vinoth-sliders/js/sliders.js?v=${cacheBuster}"></script>
 
   <script>
     try { ${js} } catch (e) { console.error(e); }
@@ -1855,7 +1855,7 @@ async function loadAll() {
         stopFlag
     );
     const cssEditor = document.getElementById('css-editor');
-    const cssUrl = `https://cdn.jsdelivr.net/gh/vinoth-elito/vinoth-sliders/css/preview.css?v=${cacheBuster}`;
+    const cssUrl = `https://vinoth-elito.github.io/vinoth-sliders/css/preview.css?v=${cacheBuster}`;
     try {
         const res = await fetch(cssUrl, { cache: 'no-store' });
         cssEditor.value = await res.text();
