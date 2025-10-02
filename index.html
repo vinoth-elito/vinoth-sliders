@@ -29,11 +29,11 @@
     <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/vinoth-elito/vinoth-sliders/favicon_io/favicon.ico">
     <link id="fa-css" rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
         as="style" onload="this.onload=null;this.rel='stylesheet';document.body.classList.add('css-ready')">
-    <link rel="preload" href="https://cdn.jsdelivr.net/gh/vinoth-elito/vinoth-sliders/css/editor.css" as="style"
-        onload="this.onload=null;this.rel='stylesheet';document.body.classList.add('css-ready')">
+    <link rel="preload" href="https://raw.githubusercontent.com/vinoth-elito/vinoth-sliders/main/css/editor.css"
+        as="style" onload="this.onload=null;this.rel='stylesheet';document.body.classList.add('css-ready')">
     <noscript>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vinoth-elito/vinoth-sliders/css/editor.css">
+        <link rel="stylesheet" href="https://raw.githubusercontent.com/vinoth-elito/vinoth-sliders/main/css/editor.css">
     </noscript>
     <style>
         body {
@@ -124,7 +124,7 @@
             script = document.createElement("script");
         script.src = window.$jqlibraryURL + "?v=" + cacheBuster;
         script.onload = function () {
-            ["https://cdn.jsdelivr.net/gh/vinoth-elito/vinoth-sliders/js/editorpreview.js", "https://cdn.jsdelivr.net/gh/vinoth-elito/vinoth-sliders/js/sliders.js"].forEach(src => {
+            ["https://raw.githubusercontent.com/vinoth-elito/vinoth-sliders/main/js/editorpreview.js", "https://raw.githubusercontent.com/vinoth-elito/vinoth-sliders/main/js/editorpreview.js"].forEach(src => {
                 const s = document.createElement("script");
                 s.src = src + "?v=" + cacheBuster,
                     document.head.appendChild(s)
