@@ -1752,7 +1752,7 @@ $('body').on('click', '.editor-sidebar button', function () {
 });
 window.addEventListener("beforeunload", function (e) {
     e.preventDefault();
-    e.returnValue = "Changes could not update if page get refresh.";
+    e.returnValue = "";
 });
 function loadScripts() {
     const editor = document.getElementById('js-editor');
