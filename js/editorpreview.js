@@ -9,7 +9,7 @@ function buildSrcDoc() {
     const js = jsEditor?.value ?? '';
     const faLinkEl = window.parent?.document?.getElementById('fa-css');
     const faHref = faLinkEl?.href ? `<link id="fa-css" rel="stylesheet" href="${faLinkEl.href}">` : '';
-    const jq = window.$jqlibraryURL ? `<script src="${window.$jqlibraryURL}?v=${cacheBuster}"></script>` : '';
+    const jq = window.$jqlibraryURL ? `<script src="${window.$jqlibraryURL}?v=${cacheBuster}" defer></script>` : '';
     const INIT_CODE = `
             window.componentFunctionMap = window.componentFunctionMap || {
             '.vincuzslider': {
@@ -354,7 +354,7 @@ function buildSrcDoc() {
   ${html}
 
   ${jq}
-  <script src="https://vinoth-elito.github.io/vinoth-sliders/js/sliders.js?v=${cacheBuster}"></script>
+  <script defer src="https://vinoth-elito.github.io/vinoth-sliders/js/sliders.js?v=${cacheBuster}"></script>
 
   <script>
     try { ${js} } catch (e) { console.error(e); }

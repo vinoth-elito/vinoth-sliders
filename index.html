@@ -130,12 +130,14 @@
         const cacheBuster = Date.now(),
             script = document.createElement("script");
         script.src = window.$jqlibraryURL + "?v=" + cacheBuster;
+        script.defer = true;
         script.onload = function () {
             ["https://vinoth-elito.github.io/vinoth-sliders/js/editorpreview.js", "https://vinoth-elito.github.io/vinoth-sliders/js/sliders.js"].forEach(src => {
                 const s = document.createElement("script");
-                s.src = src + "?v=" + cacheBuster,
-                    document.head.appendChild(s)
-            })
+                s.src = src + "?v=" + cacheBuster;
+                s.defer = true;
+                document.head.appendChild(s);
+            });
         };
         document.head.appendChild(script);
     </script>
