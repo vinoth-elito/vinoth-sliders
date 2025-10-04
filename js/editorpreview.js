@@ -1743,15 +1743,29 @@ document.addEventListener('click', function (e) {
     }
 });
 
-document.querySelector("body").addEventListener('click', (e) => {
-    const target = e.target.closest(".editor-sidebar button");
-    if (target) {
-        const dataactive = target.getAttribute("data-editor");
-        target.classList.add("active"); if (this.parentElement) Array.from(this.parentElement.querySelectorAll("button")).forEach(sibling => { if (sibling !== this) sibling.classList.remove("active"); });
-        const container = target.closest(".editor-container");
-        container.querySelectorAll(".editor-panel").forEach(el => el.classList.remove("active"));
-        container.find('#' + dataactive).classList.add("active");
-    }
+
+document.querySelectorAll(".editor-sidebar button").forEach(el => {
+    el.addEventListener('click', function () {
+        const dataactive = this.getAttribute("data-editor");
+
+        // Add 'active' to clicked button
+        this.classList.add("active");
+
+        // Remove 'active' from siblings
+        Array.from(this.parentElement.querySelectorAll("button"))
+            .filter(b => b !== this)
+            .forEach(b => b.classList.remove("active"));
+
+        // Get container
+        const container = this.closest(".editor-container");
+
+        // Remove 'active' from all panels
+        Array.from(container.querySelectorAll(".editor-panel"))
+            .forEach(p => p.classList.remove("active"));
+
+        // Add 'active' to the selected panel
+        container.querySelector("#" + dataactive).classList.add("active");
+    });
 });
 
 window.addEventListener("beforeunload", function (e) {
