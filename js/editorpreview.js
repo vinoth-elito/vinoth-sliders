@@ -1743,12 +1743,15 @@ document.addEventListener('click', function (e) {
     }
 });
 
-$('body').on('click', '.editor-sidebar button', function () {
-    var dataactive = $(this).attr('data-editor');
-    $(this).addClass('active').siblings('button').removeClass('active');
-    var container = $(this).closest('.editor-container');
-    container.find('.editor-panel').removeClass('active');
-    container.find('#' + dataactive).addClass('active');
+document.querySelector("body").addEventListener('click', (e) => {
+    const target = e.target.closest(".editor-sidebar button");
+    if (target) {
+        const dataactive = target.getAttribute("data-editor");
+        target.classList.add("active").parentElement.querySelectorAll("button").forEach(sibling => { if (sibling !== this) sibling.classList.remove("active"); });
+        const container = target.closest(".editor-container");
+        container.querySelectorAll(".editor-panel").forEach(el => el.classList.remove("active"));
+        container.find('#' + dataactive).classList.add("active");
+    }
 });
 window.addEventListener("beforeunload", function (e) {
     e.preventDefault();
