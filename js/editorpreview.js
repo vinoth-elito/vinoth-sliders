@@ -1745,17 +1745,13 @@ document.addEventListener('click', function (e) {
 
 
 
-
 document.querySelector("body").addEventListener('click', (e) => {
-    const target = e.target.closest(".editor-sidebar button");
-    if (target) {
-
-        const dataactive = target.getAttribute("data-editor");
-        target.classList.add("active"); if (target.parentElement) Array.from(target.parentElement.querySelectorAll("button")).forEach(s => { if (s !== target) s.classList.remove("active"); });
-        const container = target.closest(".editor-container");
-        container.querySelectorAll('.editor-panel').classList.remove("active");
-        container.querySelectorAll('#' + dataactive).classList.add("active");
-
+    const target = e.target.closest(".editor-sidebar button"); if (target) {
+        const dataactive = target.attr('data-editor');
+        target.classList.add("active").siblings('button').classList.remove("active");
+        const container = target.closest('.editor-container');
+        container.find('.editor-panel').classList.remove("active");
+        container.find('#' + dataactive).classList.add("active");
     }
 });
 
