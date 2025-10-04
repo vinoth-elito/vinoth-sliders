@@ -1746,6 +1746,7 @@ document.addEventListener('click', function (e) {
 
 
 document.querySelector("body").addEventListener('click', (e) => {
+
     const target = e.target.closest(".editor-sidebar button"); if (target) {
         const dataactive = target.attr('data-editor');
         target.classList.add("active").siblings('button').classList.remove("active");
