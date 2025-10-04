@@ -1744,28 +1744,19 @@ document.addEventListener('click', function (e) {
 });
 
 
-document.querySelectorAll(".editor-sidebar button").forEach(el => {
-    el.addEventListener('click', function () {
-        const dataactive = this.getAttribute("data-editor");
 
-        // Add 'active' to clicked button
-        this.classList.add("active");
 
-        // Remove 'active' from siblings
-        Array.from(this.parentElement.querySelectorAll("button"))
-            .filter(b => b !== this)
-            .forEach(b => b.classList.remove("active"));
+document.querySelector("body").addEventListener('click', (e) => {
+    const target = e.target.closest(".editor-sidebar button");
+    if (target) {
 
-        // Get container
-        const container = this.closest(".editor-container");
+        const dataactive = target.getAttribute("data-editor");
+        target.classList.add("active"); if (target.parentElement) Array.from(target.parentElement.querySelectorAll("button")).forEach(s => { if (s !== target) s.classList.remove("active"); });
+        const container = target.closest(".editor-container");
+        container.querySelectorAll('.editor-panel').classList.remove("active");
+        container.querySelectorAll('#' + dataactive).classList.add("active");
 
-        // Remove 'active' from all panels
-        Array.from(container.querySelectorAll(".editor-panel"))
-            .forEach(p => p.classList.remove("active"));
-
-        // Add 'active' to the selected panel
-        container.querySelector("#" + dataactive).classList.add("active");
-    });
+    }
 });
 
 window.addEventListener("beforeunload", function (e) {
