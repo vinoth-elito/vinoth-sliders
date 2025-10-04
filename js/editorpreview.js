@@ -1753,6 +1753,7 @@ document.querySelector("body").addEventListener('click', (e) => {
         container.find('#' + dataactive).classList.add("active");
     }
 });
+
 window.addEventListener("beforeunload", function (e) {
     e.preventDefault();
     e.returnValue = "";
