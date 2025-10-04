@@ -1747,7 +1747,7 @@ document.querySelector("body").addEventListener('click', (e) => {
     const target = e.target.closest(".editor-sidebar button");
     if (target) {
         const dataactive = target.getAttribute("data-editor");
-        target.classList.add("active").parentElement.querySelectorAll("button").forEach(sibling => { if (sibling !== this) sibling.classList.remove("active"); });
+        target.classList.add("active"); Array.from(this.parentElement.querySelectorAll("button")).forEach(sibling => { if (sibling !== this) sibling.classList.remove("active"); });
         const container = target.closest(".editor-container");
         container.querySelectorAll(".editor-panel").forEach(el => el.classList.remove("active"));
         container.find('#' + dataactive).classList.add("active");
