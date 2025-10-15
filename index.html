@@ -46,6 +46,9 @@
 </head>
 
 <body>
+    <div id="offline-message" class="offline-message">
+        ⚠️ Please connect to the internet
+    </div>
     <div id="page-loader">
         <div class="page--loader__cnt">
             <img src="https://vinoth-elito.github.io/vinoth-sliders/images/og-image.webp" width="300" height="300"
@@ -138,6 +141,17 @@
             });
         };
         document.head.appendChild(script);
+        const offlineScreen = document.getElementById('offline-message');
+        function showOfflineMessage() {
+            if (navigator.onLine) {
+                offlineScreen.style.display = 'none';
+            } else {
+                offlineScreen.style.display = 'block';
+            }
+        }
+        showOfflineMessage();
+        window.addEventListener('online', showOfflineMessage);
+        window.addEventListener('offline', showOfflineMessage);
     </script>
 </body>
 
