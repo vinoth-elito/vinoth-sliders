@@ -1960,3 +1960,14 @@ async function loadAll() {
     siteHeader.style.pointerEvents = '';
 }
 window.onload = loadAll;
+const offlineScreen = document.getElementById('offline-message');
+function showOfflineMessage() {
+    if (navigator.onLine) {
+        offlineScreen.style.display = 'none';
+    } else {
+        offlineScreen.style.display = 'block';
+    }
+}
+showOfflineMessage();
+window.addEventListener('online', showOfflineMessage);
+window.addEventListener('offline', showOfflineMessage);
