@@ -1960,14 +1960,36 @@ async function loadAll() {
     siteHeader.style.pointerEvents = '';
 }
 window.onload = loadAll;
-const offlineScreen = document.getElementById('offline-message');
+const offlineMessageHTML = `
+  <div id="offline-message" class="offline-message">
+      ⚠️ Please connect to the internet
+  </div>
+`;
 function showOfflineMessage() {
-    if (navigator.onLine) {
-        offlineScreen.style.display = 'none';
+    const existingMessage = document.getElementById('offline-message');
+    if (!navigator.onLine) {
+        if (!existingMessage) {
+            document.body.insertAdjacentHTML('beforeend', offlineMessageHTML);
+        }
     } else {
-        offlineScreen.style.display = 'block';
+        if (existingMessage) {
+            existingMessage.classList.add('fadeUp');
+            existingMessage.addEventListener('animationend', () => existingMessage.remove(), { once: true });
+        }
     }
 }
-showOfflineMessage();
+window.addEventListener('DOMContentLoaded', showOfflineMessage);
 window.addEventListener('online', showOfflineMessage);
 window.addEventListener('offline', showOfflineMessage);
+setInterval(() => {
+    fetch('https://www.google.com/favicon.ico', { mode: 'no-cors' })
+        .then(() => {
+            if (!navigator.onLine) return;
+            showOfflineMessage();
+        })
+        .catch(() => {
+            if (!document.getElementById('offline-message')) {
+                document.body.insertAdjacentHTML('beforeend', offlineMessageHTML);
+            }
+        });
+}, 10000);
