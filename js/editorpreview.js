@@ -1970,11 +1970,17 @@ function showOfflineMessage() {
     if (!navigator.onLine) {
         if (!existingMessage) {
             document.body.insertAdjacentHTML('beforeend', offlineMessageHTML);
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
         }
     } else {
         if (existingMessage) {
             existingMessage.classList.add('fadeUp');
-            existingMessage.addEventListener('animationend', () => existingMessage.remove(), { once: true });
+            existingMessage.addEventListener('animationend', () => {
+                existingMessage.remove();
+                document.documentElement.style.overflow = '';
+                document.body.style.overflow = '';
+            }, { once: true });
         }
     }
 }
@@ -1990,6 +1996,8 @@ setInterval(() => {
         .catch(() => {
             if (!document.getElementById('offline-message')) {
                 document.body.insertAdjacentHTML('beforeend', offlineMessageHTML);
+                document.documentElement.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden';
             }
         });
 }, 10000);
