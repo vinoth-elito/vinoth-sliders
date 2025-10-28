@@ -917,7 +917,6 @@ form#search__popupmain label {
 .offline-message {
     position: fixed;
     inset: 0;
-    /* shorthand for top/left/right/bottom 0 */
     height: 100%;
     display: flex;
     justify-content: center;
