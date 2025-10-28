@@ -916,10 +916,14 @@ form#search__popupmain label {
 
 .offline-message {
     position: fixed;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     top: 0;
     left: 0;
     right: 0;
-    background: #ff4d4d;
+    background: #000000d6;
     color: white;
     text-align: center;
     padding: 10px;
@@ -929,6 +933,8 @@ form#search__popupmain label {
     opacity: 0;
     transform: translateY(-100%);
     animation: fadeDown 0.4s forwards;
+    user-select: none;
+    cursor: progress;
 }
 
 @keyframes fadeDown {
